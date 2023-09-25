@@ -1,0 +1,76 @@
+/** 
+ *  That's not beef
+ *  
+ *  We've implemented a contract with 2 functions.
+ *  One function returns the owner of the contract.
+ *  The other function returns the caller if the year is less than 2030.
+ *  
+ *  However we have discovered an issue with the contract.
+ *  When we call the function OWNER() we instead get the caller.
+ *  After triple checking the code we are sure that the function OWNER() is correct.
+ *  What is going on?
+ *
+ *  Your task: identify the issue and fix it so that when we call OWNER() we get the owner of the contract(0xdeadbeef).
+ *
+ *  Difficulty: Medium
+ */
+
+/* Interface */
+#define function ideal_warn_timed(uint256,uint128) view returns (address)
+#define function owner() view returns (address)
+
+/* Storage Slots */
+#define constant OWNER_SLOT = FREE_STORAGE_POINTER()
+
+/* Methods */
+#define macro CONSTRUCTOR() = takes (0) returns (0) {
+    0xdeadbeef [OWNER_SLOT] sstore // Set the owner of the contract.
+}
+
+
+// If the year is 2030 then we should warn the sender that this contract is very old.
+// return the caller if the timestamp is less than 2030 else return 0
+#define macro IDEAL_WARN_TIMED() = takes (0) returns (0) {
+    0x70DBD880 timestamp lt // [timestamp < 0x70DBD880]
+    stillGood jumpi
+    0x00 // [0x00]
+    returnJump jump
+
+    stillGood:
+        caller
+
+    returnJump: // [caller or 0x00]
+
+    // Store value in memory.
+    0x00 mstore
+
+    // Return value
+    0x20 0x00 return
+}
+
+// Get the owner of the contract.
+#define macro OWNER() = takes (0) returns (0) {
+    // Load value from storage.
+    [OWNER_SLOT]   // [ptr]
+    sload                // [value]
+
+    // Store value in memory.
+    0x00 mstore
+
+    // Return value
+    0x20 0x00 return
+}
+
+#define macro MAIN() = takes (0) returns (0) {
+    // Identify which function is being called.
+    0x00 calldataload 0xE0 shr
+    dup1 __FUNC_SIG(ideal_warn_timed) eq warn jumpi
+    dup1 __FUNC_SIG(owner) eq owner jumpi
+
+    0x00 0x00 revert
+
+    warn:
+        IDEAL_WARN_TIMED()
+    owner:
+        OWNER()
+}
