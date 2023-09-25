@@ -1,0 +1,71 @@
+/** 
+ *  Missing
+ *  
+ *  We've implemented a contract that has an owner.
+ *  Anyone can claim ownership of the contract by calling the function claimOwnership().
+ *  
+ *  However we have discovered an issue with the contract.
+ *  When we call the function claimOwnership() the owner of the contract is not set to the caller.
+ *  Instead the owner of the contract is set to the zero address.
+ *  What is going on?
+ *
+ *  Your task: identify the issue and fix it so that when we call claimOwnership() the owner of the contract is set to the caller.
+ *
+ *  Difficulty: Easy
+ */
+
+/* Interface */
+#define function claimOwnership() view returns ()
+#define function clearOwner() view returns ()
+#define function owner() view returns (address)
+
+/* Storage Slots */
+#define constant OWNER_SLOT = FREE_STORAGE_POINTER()
+
+/* Methods */
+#define macro CONSTRUCTOR() = takes (0) returns (0) {
+    0xdead [OWNER_SLOT] sstore // Set the owner of the contract.
+}
+
+#define macro CLAIM_OWNERSHIP() = takes (0) returns (0) {
+    // Get the caller.
+    caller
+
+    // Store the caller in storage.
+    [OWNER_SLOT] sstore
+}
+
+#define macro CLEAR_OWNER() = takes (0) returns (0) {
+    // Store 0 in storage.
+    0x00 [OWNER_SLOT] sstore
+}
+
+// Get the owner of the contract.
+#define macro OWNER() = takes (0) returns (0) {
+    // Load value from storage.
+    [OWNER_SLOT]   // [ptr]
+    sload          // [value]
+
+    // Store value in memory.
+    0x00 mstore
+
+    // Return value
+    0x20 0x00 return
+}
+
+#define macro MAIN() = takes (0) returns (0) {
+    // Identify which function is being called.
+    0x00 calldataload 0xE0 shr
+    dup1 __FUNC_SIG(claimOwnership) eq claim jumpi
+    dup1 __FUNC_SIG(clearOwner) eq clear jumpi
+    dup1 __FUNC_SIG(owner) eq get jumpi
+
+    0x00 0x00 revert
+
+    claim:
+        CLAIM_OWNERSHIP()
+    clear:
+        CLEAR_OWNER()
+    get:
+        OWNER()
+}
