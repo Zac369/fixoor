@@ -2,11 +2,11 @@
 
 # fixoor • ![license](https://img.shields.io/github/license/huff-language/huff-project-template.svg) ![solidity](https://img.shields.io/badge/solidity-^0.8.15-lightgrey)
 
-### A collection of huff contracts that currently do not work as intended. 
+A collection of huff contracts that currently do not work as intended. 
 
-### The goal is to fix them and learn about common mistakes in the process.
+The goal is to fix them and learn about common mistakes in the process.
 
-### This project is aimed at new huffoors and is meant to be a learning experience. Most of the challenges will be very easy to solve for experienced huffoors.
+This project is aimed at new huffoors and is meant to be a learning experience. Most of the challenges will be very easy to solve for experienced huffoors.
 
 ## Recommended Solve Order
 
