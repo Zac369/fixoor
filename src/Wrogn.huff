@@ -1,0 +1,82 @@
+/** 
+ *  Wrogn
+ *  
+ *  We've implemented a contract that performs some calculations on a given number.
+ *  There are 4 possible calculations that can be performed:
+    *      1. If the number is even, return number / 2 + 1
+    *      2. If the number is odd and greater than 100, return number / 10 + 7
+    *      3. If the number is odd and less than 100 and a multiple of 3, return number / 3 + 3
+    *      4. Otherwise, return the number
+ *  
+ *  However when calling the function calculation it always reverts.
+ *  You are sure that you implemented calculation logic correctly.
+ *
+ *  Your task: Fix the contract so that rather than reverting, it returns the correct value.
+ *
+ *  Difficulty: Medium
+ */
+
+
+// isEven
+// grearterThanHundred
+// multipleOfThree
+// catchAll
+
+// grearterThanHundred
+
+/* Interface */
+#define function calculation(uint256) view returns (uint256)
+
+#define macro CALCULATION() = takes (0) returns (0) {
+    0x04 calldataload // [value]
+
+    // check if value is even
+    dup1 // [value, value]
+    0x02 swap1 mod // [value % 2, value]
+    iszero isEven jumpi // [value]
+
+    // check if value is greater than 100
+    dup1 // [value, value]
+    0x64 swap1 gt // [value > 100, value]
+    grearterThanHundred jumpi // [value]
+
+    // check if value is multiple of 3
+    dup1 // [value, value]
+    0x03 swap1 mod // [value % 3, value]
+    iszero multipleOfTree jumpi // [value]
+
+    // else just return value
+    returnJump jump
+
+    isEven:
+        0x02 swap1 div 0x01 add // [value / 2 + 1]
+        returnJump jump
+
+    greaterThanHundred:
+        0x0a swap1 div 0x07 add // [value / 10 + 7]
+        returnJump jump
+
+    multipleOfThree:
+        0x03 swap1 div 0x03 add // [value / 3 + 3]
+        returnJump jump
+
+    returnJump:
+        // Store value in memory.
+        0x00 mstore
+
+        // Return value
+        0x20 0x00 return
+}
+
+#define macro MAIN() = takes (0) returns (0) {
+    // Identify which function is being called.
+    0x00 calldataload 0xE0 shr
+    dup1 __FUNC_SIG(calculation) eq calc jumpi
+
+    0x00 0x00 revert
+
+    calc:
+        CALCULATION()
+    
+
+}

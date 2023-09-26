@@ -12,9 +12,10 @@ This project is aimed at new huffoors and is meant to be a learning experience. 
 
 1. SimpleReturn
 2. Missing
-3. SolidityString
-4. SomeArray
-5. NotBeef
+3. Wrogn
+4. SolidityString
+5. SomeArray
+6. NotBeef
 
 ## How To Play Example
 

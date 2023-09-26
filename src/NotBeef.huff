@@ -12,7 +12,7 @@
  *
  *  Your task: identify the issue and fix it so that when we call OWNER() we get the owner of the contract(0xdeadbeef).
  *
- *  Difficulty: Medium
+ *  Difficulty: Hard
  */
 
 /* Interface */
