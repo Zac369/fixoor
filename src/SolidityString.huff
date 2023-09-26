@@ -1,0 +1,37 @@
+/** 
+ *  Solidity String
+ *  
+ *  We've implemented a contract that returns the string "Hello World" when we call the function hello().
+ *  
+ *  However when calling the function hello() in Solidity, we notice that the string returned is empty.
+ *  The function hello() definitely returns "Hello World", so what's going on?
+ *  We suspect that the string is not being returned correctly.
+ *
+ *  Your task: return the string "Hello World" in the correct way for Solidity.
+ *
+ *  Difficulty: Medium
+ */
+
+/* Interface */
+#define function hello() view returns (string memory)
+
+/* Methods */
+#define macro HELLO_WORLD() = takes (0) returns (0) {
+    __RIGHTPAD(0x48656c6c6f20576f726c64) // "Hello World"
+    0x40 mstore
+
+    // Return value
+    0x20 0x00 return
+}
+
+#define macro MAIN() = takes (0) returns (0) {
+    // Identify which function is being called.
+    0x00 calldataload 0xE0 shr
+    dup1 __FUNC_SIG(hello) eq world jumpi
+
+    0x00 0x00 revert
+
+    world:
+        HELLO_WORLD()
+
+}

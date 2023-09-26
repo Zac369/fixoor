@@ -2,22 +2,19 @@
 
 # fixoor • ![license](https://img.shields.io/github/license/huff-language/huff-project-template.svg) ![solidity](https://img.shields.io/badge/solidity-^0.8.15-lightgrey)
 
-Versatile Huff Project Template using Foundry.
+### A collection of huff contracts that currently do not work as intended. 
 
-A collection of huff contracts that currently do not work as intended. 
+### The goal is to fix them and learn about common mistakes in the process.
 
-The goal is to fix them and learn about common mistakes in the process.
-
-This project is aimed at new huffoors and is meant to be a learning experience. Most of the challenges will be very easy to solve for experienced huffoors.
-
-
-## Getting Started
+### This project is aimed at new huffoors and is meant to be a learning experience. Most of the challenges will be very easy to solve for experienced huffoors.
 
 ## Recommended Solve Order
 
 1. SimpleReturn
 2. Missing
-3. NotBeef
+3. SolidityString
+4. SomeArray
+5. NotBeef
 
 ## How To Play Example
 
@@ -43,6 +40,8 @@ You should see something like this
     Running 1 test for test/SimpleReturn.t.sol:SimpleReturnTest
     [PASS] testGetOwner(uint256) (runs: 256, μ: 5312, ~: 5312)
     Test result: ok. 1 passed; 0 failed; 0 skipped; finished in 1.16s
+
+## Getting Started
 
 ### Requirements
 

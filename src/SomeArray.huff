@@ -1,0 +1,58 @@
+/** 
+ *  Some Array
+ *  
+ *  We've implemented a contract with a function that takes an array of 20 uint256s and returns the sum of the array.
+ *  The loop opcode doesn't seem to exist, so we typed out every calldata load manually.
+ *  
+ *  We have just found out that the array will actually be 1000 uint256s long.
+ *  If we keep doing this manually, we'll be here all day!
+ *
+ *  Your task: Update the SUM() macro so that it sums an array of 1000 uint256s(assume overflow is not a problem)
+ *  While you could just copy and paste the calldataloads 1000 times, we're looking for a more elegant solution.
+ *
+ *  Difficulty: Medium
+ */
+
+/* Interface */
+#define function sum(uint256[] memory) view returns (uint256)
+
+/* Methods */
+#define macro SUM() = takes (0) returns (0) {
+    0x44 calldataload
+    0x64 calldataload add
+    0x84 calldataload add
+    0xA4 calldataload add
+    0xC4 calldataload add
+    0xE4 calldataload add
+    0x104 calldataload add
+    0x124 calldataload add
+    0x144 calldataload add
+    0x164 calldataload add
+    0x184 calldataload add
+    0x1A4 calldataload add
+    0x1C4 calldataload add
+    0x1E4 calldataload add
+    0x204 calldataload add
+    0x224 calldataload add
+    0x244 calldataload add
+    0x264 calldataload add
+    0x284 calldataload add
+    0x2A4 calldataload add
+
+    0x00 mstore
+
+    // Return value
+    0x20 0x00 return
+}
+
+#define macro MAIN() = takes (0) returns (0) {
+    // Identify which function is being called.
+    0x00 calldataload 0xE0 shr
+    dup1 __FUNC_SIG(sum) eq some jumpi
+
+    0x00 0x00 revert
+
+    some:
+        SUM()
+
+}
